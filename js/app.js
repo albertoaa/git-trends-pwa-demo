@@ -1,5 +1,4 @@
 (function () {
-
   Date.prototype.yyyymmdd = function () {
     let mm = this.getMonth() + 1;
     let dd = this.getDate();
@@ -20,33 +19,47 @@
       const endDate = new Date();
       return endDate.yyyymmdd();
     }
-  }
+  };
 
   const app = {
-    apiURL: `https://api.github.com/search/repositories?q=created%3A%22${dates.startDate()}+..+${dates.endDate()}%22%20language%3Ajavascript&sort=stars&order=desc`
-  }
+    apiURL: `https://api.github.com/search/repositories?q=created:"${dates.startDate()}+..+${dates.endDate()}" language:javascript&sort=stars&order=desc`,
+    cardTemplate: document.querySelector('.card-template')
+  };
 
   app.updateTrends = function (trends) {
     const trendsRow = document.querySelector('.trends');
-    for (let i = 0; i < trends.lenght; i++) {
+    for (let i = 0; i < trends.length; i++) {
       const trend = trends[i];
       trendsRow.appendChild(app.createCard(trend));
     }
-  }
+  };
+
+  app.createCard = function(trend) {
+    const card = app.cardTemplate.cloneNode(true);
+    card.classList.remove('card-template');
+    card.querySelector('.card-title').textContent = trend.full_name;
+    card.querySelector('.card-lang').textContent = trend.language;
+    card.querySelector('.card-stars').textContent = trend.stargazers_count;
+    card.querySelector('.card-forks').textContent = trend.forks;
+    card.querySelector('.card-link').setAttribute('href', trend.html_url);
+    card.querySelector('.card-link').setAttribute('target', '_blank');
+    return card;
+  };
+
   app.getTrends = function () {
     fetch(app.apiURL)
       .then(response => response.json())
       .then(function(trends) {
-        console.log('From server...')
-        app.updateTrends(trends.items)
+        console.log('From server...');
+        app.updateTrends(trends.items);
       }).catch(function (err) {
         // Error
     });
-  }
+  };
 
   document.addEventListener('DOMContentLoaded', function () {
     app.getTrends()
-  })
+  });
 
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker
@@ -55,4 +68,4 @@
         console.log('Service Worker Registered');
       });
   }
-}) ()
+}) ();
