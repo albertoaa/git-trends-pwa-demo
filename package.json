@@ -1,0 +1,23 @@
+{
+  "name": "pwa-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "service-worker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/ronin8503/pwa-demo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/ronin8503/pwa-demo#readme",
+  "devDependencies": {
+    "sw-precache": "^5.2.0"
+  },
+  "scripts": {
+    "sw": "sw-precache --config=tools/precache.js --verbose"
+  }
+}
