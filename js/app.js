@@ -47,6 +47,19 @@
   };
 
   app.getTrends = function () {
+    const networkReturned = false;
+    if ('caches' in window) {
+      caches.match(app.apiURL).then(function(response) {
+        if(response) {
+          response.json().then(function(trends) {
+            console.log('From cache...')
+            if(!networkReturned) {
+              app.updateTrends(trends);
+            }
+          })
+        }
+      })
+    }
     fetch(app.apiURL)
       .then(response => response.json())
       .then(function(trends) {

@@ -1,4 +1,4 @@
-const name = 'scotchPWA-v1';
+const name = 'scotchPWA-v2';
 module.exports = {
   staticFileGlobs: [
     './index.html',
@@ -8,5 +8,15 @@ module.exports = {
     './css/*.css',
     'http://fonts.googleapis.com/icon?family=Material+Icons'
   ],
-  stripPrefix: '.'
+  stripPrefix: '.',
+  // Runtime precache
+  runtimeCaching: [{
+    urlPattern: /https:\/\/api\.github\.com\/search\/repositories/,
+    handler: 'networkFirst',
+    options: {
+      cache: {
+        name: name
+      }
+    }
+  }]
 };
